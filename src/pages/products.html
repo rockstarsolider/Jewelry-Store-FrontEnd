@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خانه</title>
+    <link href="../style/output.css" rel="stylesheet">
+    
+</head>
+<body class="font-[yekan] text-[#000000] flex flex-col justify-center  from-[#ffe2d7] to-50% to-[#FAEFE9] bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))]">
+    <!-- Header -->
+    <div class="w-full h-14 bg-gradient-to-r from-[#FAEFE9] to-[#FFA280] flex items-center justify-between px[5%]">
+        <img src="../assets/images/logo.png" class="pt-5"/>
+        <div class="flex gap-5 items-center">
+            <input dir="rtl" id="search" type="text" placeholder="جستجو" class="input invisible input-bordered input-sm w-32 max-w-xs" />
+            <img src="../assets/icons/Search.svg" class="cursor-pointer" onclick="document.getElementById('search').classList.toggle('invisible')"/>
+            <div class="dropdown dropdown-bottom dropdown-end">
+                <img tabindex="0" src="../assets/icons/menu 1.svg" class="pr-5 m-1 hover:cursor-pointer"/>
+                <ul tabindex="0" class="dropdown-content -mt-[45px] menu bg-base-100 rounded-bl-xl z-[1] w-52 p-2 shadow">
+                  <li dir="rtl" class="font-medium text-lg"><a>درباره ما</a></li>
+                  <li dir="rtl" class="font-medium text-lg"><a>محصولات</a></li>
+                </ul>
+              </div>
+        </div>
+    </div>
+
+    <div class="w-full p-4 bg-[#FFA280] flex justify-center">
+        <h2 class="font-bold text-2xl">محصولات</h2>
+    </div>
+
+    <!-- Filter section -->
+    <div  dir="rtl" class=" p-5 border-2 gap-3 border-black flex justify-start m-5 rounded-xl flex-col ">
+        <p class="font-medium text-xl">قیمت</p>
+        <div class="flex gap-4">
+            <input type="range" min="0" max="100000000" value="0" class="slider " id="rangeMin" oninput="updateValues()">
+            <p id="minValue">حداقل قیمت:</p>
+        </div>
+        <div class="flex gap-4">
+            <input type="range" min="0" max="100000000" value="100000000" class="slider" id="rangeMax" oninput="updateValues()">
+            <p id="maxValue">حداکثر:</p>
+        </div>
+        <p class="font-medium text-xl pt-5">نمایش بر اساس</p>
+        <select class="select select-bordered w-full max-w-xs">
+            <option selected>جدیدترین</option>
+            <option>قیمت</option>
+            <option>نام</option>
+        </select>
+        <p class="font-medium text-xl pt-5">دسته بندی</p>
+        <select class="select select-bordered w-full max-w-xs">
+            <option selected>گردنبند</option>
+            <option>دستبند</option>
+            <option>النگو</option>
+        </select>
+        <a href="#" class="pt-1 mt-5 text-lg btn w-44 bg-[#FFA280] text-white border-[#FFA280] hover:bg-[#FFA280]">اعمال فیلتر ها</a>
+    </div>
+
+    <!-- Products -->
+    <div class="flex flex-col w-full justify-center items-center gap-8 px-7 py-9 from-[#ffe2d7] to-50% to-[#FAEFE9] bg-[radial-gradient(circle_at_bottom_right,_var(--tw-gradient-stops))] ">
+        <div class="flex flex-col w-full justify-center items-center">
+            <h2 class="text-2xl font-bold">محصولات</h2>
+            <div class="w-36 h-2 bg-[#FFA280] mt-3 rounded-3xl z-20"></div>
+            <div class="w-[90%] h-1 bg-[#C5C5C5] rounded-3xl relative bottom-1"></div>
+        </div>
+        <div dir="rtl" class="grid grid-cols-2 w-full justify-items-center pt-4 ">
+            <div dir="rtl" class="flex flex-col max-w-[160px]">
+                <img src="../assets/images/main-5.png" class="max-w-[140px]"/>
+                <h3 class="text-[#FFA280] text-2xl font-bold pt-3">انگشتر</h3>
+                <p class="pt-1 text-lg">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و  </p>
+            </div>
+        </div>
+        <div dir="rtl" class="flex gap-2 justify-center items-center" >
+            <p>صفحه</p>
+            <input type="number" value="1" class="input input-bordered input-sm max-w-xs w-14" />
+            <p>از 5</p>
+        </div>
+        <a href="#" class="pt-1 text-lg btn bg-[#FFA280] text-white border-[#FFA280] hover:bg-[#FFA280]">صفحه بعد</a>
+    </div>
+
+    <!-- Footer -->
+    <div dir="rtl" class="flex flex-col w-full bg-[#FFE8DB] gap-4">
+        <img class="-mt-14" src="../assets/images/logo-bigger.png"/>
+        <a href="#" class="font-medium text-xl px-16 -mt-10">درباره ما </a>
+        <a href="#" class="font-medium text-xl px-16">محصولات </a>
+        <a href="#" class="font-lg text-xl px-20">گردنبند </a>
+        <a href="#" class="font-lg text-xl px-20">دستبند </a>
+        <a href="#" class="font-lg text-xl px-20">گوشواره </a>
+        <div class="w-full flex justify-center gap-20 items-center p-7">
+            <img class="w-16" src="../assets/icons/telegram 1.png"/>
+            <img class="w-16" src="../assets/icons/instagram 1.png"/>
+        </div>
+        <div class="w-full h-[2px] bg-[#C3C3C3]"></div>
+        <div class="flex justify-center pb-6">
+            <p class="text-xl ">طراحی شده توسط گروه <a href="https://minddev.ir/">مایند دو</a></p>
+        </div>
+    </div>
+</body>
+<script>  
+    function updateValues() {  
+        const rangeMin = document.getElementById('rangeMin');  
+        const rangeMax = document.getElementById('rangeMax'); 
+        function priceOpt(x) {
+            const n = Math.ceil(x / 1000000) * 1000000
+            return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        if (parseInt(rangeMin.value) > parseInt(rangeMax.value)) {  
+            rangeMin.value = rangeMax.value;  
+        }  
+
+        document.getElementById('minValue').innerText = ' حداقل: ' + priceOpt(rangeMin.value)+' تومان ';  
+        document.getElementById('maxValue').innerText = ' حداکثر: ' + priceOpt(rangeMax.value)+' تومان ';  
+    }  
+    document.addEventListener("DOMContentLoaded", updateValues);  
+</script>  
+</html>
