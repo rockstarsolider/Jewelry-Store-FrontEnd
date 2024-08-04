@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خانه</title>
+    <title>محصولات</title>
     <link href="../style/output.css" rel="stylesheet">
     
 </head>
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Filter section -->
-    <div  dir="rtl" class=" p-5 border-2 gap-3 border-black flex justify-start m-5 rounded-xl flex-col ">
+    <div id="filter" dir="rtl" class=" p-5 border-2 gap-3 border-black flex justify-start m-5 rounded-xl flex-col ">
         <p class="font-medium text-xl">قیمت</p>
         <div class="flex gap-4">
             <input type="range" min="0" max="100000000" value="0" class="slider " id="rangeMin" oninput="updateValues()">
@@ -43,15 +43,12 @@
         <select class="select select-bordered w-full max-w-xs">
             <option selected>جدیدترین</option>
             <option>قیمت</option>
-            <option>نام</option>
         </select>
         <p class="font-medium text-xl pt-5">دسته بندی</p>
-        <select class="select select-bordered w-full max-w-xs">
-            <option selected>گردنبند</option>
-            <option>دستبند</option>
-            <option>النگو</option>
+        <select id="cat-con" class="select select-bordered w-full max-w-xs">
+            <option selected></option>
         </select>
-        <a href="#" class="pt-1 mt-5 text-lg btn w-44 bg-[#FFA280] text-white border-[#FFA280] hover:bg-[#FFA280]">اعمال فیلتر ها</a>
+        <button id="filter-sub" class="pt-1 mt-5 text-lg btn w-44 bg-[#FFA280] text-white border-[#FFA280] hover:bg-[#FFA280]">اعمال فیلتر ها</button>
     </div>
 
     <!-- Products -->
@@ -61,19 +58,15 @@
             <div class="w-36 h-2 bg-[#FFA280] mt-3 rounded-3xl z-20"></div>
             <div class="w-[90%] h-1 bg-[#C5C5C5] rounded-3xl relative bottom-1"></div>
         </div>
-        <div dir="rtl" class="grid grid-cols-2 w-full justify-items-center pt-4 ">
-            <div dir="rtl" class="flex flex-col max-w-[160px]">
-                <img src="../assets/images/main-5.png" class="max-w-[140px]"/>
-                <h3 class="text-[#FFA280] text-2xl font-bold pt-3">انگشتر</h3>
-                <p class="pt-1 text-lg">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و  </p>
-            </div>
+        <div id='product-con' dir="rtl" class="grid grid-cols-2 w-full justify-items-center pt-4 ">
+            
         </div>
         <div dir="rtl" class="flex gap-2 justify-center items-center" >
             <p>صفحه</p>
-            <input type="number" value="1" class="input input-bordered input-sm max-w-xs w-14" />
+            <input id="page-input" type="number" value="1" class="input input-bordered input-sm max-w-xs w-14"/>
             <p>از 5</p>
         </div>
-        <a href="#" class="pt-1 text-lg btn bg-[#FFA280] text-white border-[#FFA280] hover:bg-[#FFA280]">صفحه بعد</a>
+        <button id="page-btn" class="pt-1 text-lg btn bg-[#FFA280] text-white border-[#FFA280] hover:bg-[#FFA280]">صفحه بعد</button>
     </div>
 
     <!-- Footer -->
@@ -102,14 +95,68 @@
             const n = Math.ceil(x / 1000000) * 1000000
             return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-
         if (parseInt(rangeMin.value) > parseInt(rangeMax.value)) {  
             rangeMin.value = rangeMax.value;  
         }  
-
         document.getElementById('minValue').innerText = ' حداقل: ' + priceOpt(rangeMin.value)+' تومان ';  
         document.getElementById('maxValue').innerText = ' حداکثر: ' + priceOpt(rangeMax.value)+' تومان ';  
     }  
-    document.addEventListener("DOMContentLoaded", updateValues);  
+    document.addEventListener("DOMContentLoaded", updateValues);
 </script>  
+<script type="module">
+    import {apiUrl} from '../scripts/api.js'
+    var currentPage = 1
+    const categoryCon = document.getElementById('cat-con')
+    const category = ()=>{
+        if(categoryCon.value){
+            return 'category='+categoryCon.value
+        }
+    }
+    function getProducts(){
+        fetch(`${apiUrl()}/products/?perpage=2&page=${currentPage}&${category()}`)  
+        .then(response => response.json())  
+        .then(data => {
+            const productCon = document.getElementById('product-con')
+            productCon.innerHTML = ''
+            data.forEach(item => {  
+                const div = document.createElement('div');
+                div.className =  'flex flex-col max-w-[160px]'
+                div.innerHTML = `  
+                    <img src="${apiUrl()}${item.image}" class="max-w-[140px]"/>
+                    <h3 class="text-[#FFA280] text-2xl font-bold pt-3">${item.name}</h3>
+                    <p class="pt-1 text-lg">${item.description}</p>
+                `;  
+                productCon.appendChild(div); 
+            }); 
+        })  
+        .catch(error => console.error('Error fetching data:', error));
+    }
+
+    getProducts()
+    const pageInput = document.getElementById('page-input')
+    const pageBtn = document.getElementById('page-btn')
+    const filterSub = document.getElementById('filter-sub')
+    filterSub.onclick = getProducts()
+    pageInput.onchange=()=>{
+        currentPage=pageInput.value
+        getProducts()
+    }
+    pageBtn.onclick=()=>{
+        console.log(currentPage)
+        currentPage+=1
+        getProducts()
+    }
+
+    fetch(`${apiUrl()}/ctegories/`)  
+    .then(response => response.json())  
+    .then(data => {  
+        const categoryCon = document.getElementById('cat-con')
+        data.forEach(item => {  
+            const opt = document.createElement('option');
+            opt.innerHTML = item.name
+            categoryCon.appendChild(opt);
+        }); 
+    })  
+    .catch(error => console.error('Error fetching data:', error)); 
+</script>
 </html>
