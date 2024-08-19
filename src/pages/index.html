@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>خانه</title>
     <link href="../style/output.css" rel="stylesheet">
+    <script src="../scripts/api.js"></script>
 </head>
 <body class=" text-[#000000]">
     <!-- Header -->
     <div class="w-full h-14 xl:h-16 bg-gradient-to-r from-[#FAEFE9] to-[#FFA280] flex items-center justify-between xl:px-8">
-        <img src="../assets/images/logo.png" class="pt-5"/>
+        <a href="./index.html"><img src="../assets/images/logo.png" class="pt-5"/></a>
         <div dir="rtl" class="gap-8 hidden xl:flex">
             <a class="font-medium" href="./">خانه</a>
             <a class="font-medium" href="./products.html">محصولات</a>
             <a class="font-medium" href="./about.html">درباره ما</a>
         </div>
         <div class="flex gap-5 items-center">
-            <a id="search-sub" class="invisible btn btn-sm">جستجو</a>
             <input dir="rtl" id="search" type="text" placeholder="جستجو" class="input invisible input-bordered input-sm w-32 max-w-xs"/>
-            <img src="../assets/icons/Search.svg" class="cursor-pointer" onclick="toggleSearch()"/>
+            <img src="../assets/icons/Search.svg" class="cursor-pointer" id="search-icon"/>
             <div class="dropdown dropdown-bottom dropdown-end xl:hidden">
                 <img tabindex="0" src="../assets/icons/menu 1.svg" class="pr-5 m-1 hover:cursor-pointer"/>
                 <ul tabindex="0" class="dropdown-content -mt-[45px] menu bg-base-100 rounded-bl-xl z-[1] w-52 p-2 shadow">
@@ -28,6 +28,9 @@
                 </ul>
             </div>
         </div>
+    </div>
+    <div id="search-pro" class="absolute z-30 right-[22em] top-14 w-0 h-0 flex flex-col">
+
     </div>
 
     <!-- Hero -->
@@ -73,7 +76,7 @@
     <div class="w-full h-[2px] bg-[#C3C3C3]"></div>
 
     <!-- Special products -->
-    <div class="flex flex-col w-full justify-center items-center gap-8 pt-16 px-7 py-9 from-[#ffe2d7] to-50% to-[#FAEFE9] bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))]">
+    <!-- <div class="flex flex-col w-full justify-center items-center gap-8 pt-16 px-7 py-9 from-[#ffe2d7] to-50% to-[#FAEFE9] bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))]">
         <div class="flex flex-col w-full justify-center items-center">
             <h2 class="text-2xl font-bold"> محصولات ویژه</h2>
             <div class="w-36 h-2 bg-[#FFA280] mt-3 rounded-3xl z-20"></div>
@@ -90,7 +93,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Testimonials -->
     <div class="flex flex-col w-full justify-center items-center gap-8 px-7 py-9 pt-16 from-[#ffe2d7] to-50% to-[#FAEFE9] bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))]">
@@ -197,16 +200,6 @@
         </div>
     </div>
 </body>
-<script>
-    const toggleSearch = () => {
-        document.getElementById('search').classList.toggle('invisible')
-        document.getElementById('search-sub').classList.toggle('invisible')
-    }
-    const searchSub = document.getElementById('search-sub')
-    searchSub.addEventListener('click', () => {
-        window.location.replace(`./products.html?search=${document.getElementById('search').value}`)
-    })
-</script>
 <script type="module">
     import {apiUrl} from '../scripts/api.js'
     fetch(`${apiUrl()}/products/`)  
