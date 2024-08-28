@@ -1084,6 +1084,16 @@ html {
     --glass-border-opacity: 15%;
   }
 
+  .btn-ghost:hover {
+    border-color: transparent;
+  }
+
+  @supports (color: oklch(0% 0 0)) {
+    .btn-ghost:hover {
+      background-color: var(--fallback-bc,oklch(var(--bc)/0.2));
+    }
+  }
+
   .btn-disabled:hover,
     .btn[disabled]:hover,
     .btn:disabled:hover {
@@ -1276,6 +1286,80 @@ html {
   justify-self: end;
 }
 
+.modal {
+  pointer-events: none;
+  position: fixed;
+  inset: 0px;
+  margin: 0px;
+  display: grid;
+  height: 100%;
+  max-height: none;
+  width: 100%;
+  max-width: none;
+  justify-items: center;
+  padding: 0px;
+  opacity: 0;
+  overscroll-behavior: contain;
+  z-index: 999;
+  background-color: transparent;
+  color: inherit;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-property: transform, opacity, visibility;
+  overflow-y: hidden;
+}
+
+:where(.modal) {
+  align-items: center;
+}
+
+.modal-box {
+  max-height: calc(100vh - 5em);
+  grid-column-start: 1;
+  grid-row-start: 1;
+  width: 91.666667%;
+  max-width: 32rem;
+  --tw-scale-x: .9;
+  --tw-scale-y: .9;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  border-bottom-right-radius: var(--rounded-box, 1rem);
+  border-bottom-left-radius: var(--rounded-box, 1rem);
+  border-top-left-radius: var(--rounded-box, 1rem);
+  border-top-right-radius: var(--rounded-box, 1rem);
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+  padding: 1.5rem;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-duration: 200ms;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.modal-open,
+.modal:target,
+.modal-toggle:checked + .modal,
+.modal[open] {
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-action {
+  display: flex;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+:root:has(:is(.modal-open, .modal:target, .modal-toggle:checked + .modal, .modal[open])) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
 .radio {
   flex-shrink: 0;
   --chkbg: var(--bc);
@@ -1401,6 +1485,22 @@ html {
 .btn.glass.btn-active {
   --glass-opacity: 25%;
   --glass-border-opacity: 15%;
+}
+
+.btn-ghost {
+  border-width: 1px;
+  border-color: transparent;
+  background-color: transparent;
+  color: currentColor;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  outline-color: currentColor;
+}
+
+.btn-ghost.btn-active {
+  border-color: transparent;
+  background-color: var(--fallback-bc,oklch(var(--bc)/0.2));
 }
 
 .btn.btn-disabled,
@@ -1805,6 +1905,28 @@ details.collapse summary::-webkit-details-marker {
   opacity: 0.6;
 }
 
+.modal:not(dialog:not(.modal-open)),
+  .modal::backdrop {
+  background-color: #0006;
+  animation: modal-pop 0.2s ease-out;
+}
+
+.modal-open .modal-box,
+.modal-toggle:checked + .modal .modal-box,
+.modal:target .modal-box,
+.modal[open] .modal-box {
+  --tw-translate-y: 0px;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.modal-action > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 @keyframes modal-pop {
   0% {
     opacity: 0;
@@ -2144,6 +2266,10 @@ details.collapse summary::-webkit-details-marker {
   border-start-end-radius: inherit;
 }
 
+.modal-bottom {
+  place-items: end;
+}
+
 .join.join-vertical > :where(*:not(:first-child)) {
   margin-left: 0px;
   margin-right: 0px;
@@ -2164,16 +2290,51 @@ details.collapse summary::-webkit-details-marker {
   margin-inline-start: calc(var(--border-btn) * -1);
 }
 
+.modal-top :where(.modal-box) {
+  width: 100%;
+  max-width: none;
+  --tw-translate-y: -2.5rem;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  border-bottom-right-radius: var(--rounded-box, 1rem);
+  border-bottom-left-radius: var(--rounded-box, 1rem);
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.modal-middle :where(.modal-box) {
+  width: 91.666667%;
+  max-width: 32rem;
+  --tw-translate-y: 0px;
+  --tw-scale-x: .9;
+  --tw-scale-y: .9;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  border-top-left-radius: var(--rounded-box, 1rem);
+  border-top-right-radius: var(--rounded-box, 1rem);
+  border-bottom-right-radius: var(--rounded-box, 1rem);
+  border-bottom-left-radius: var(--rounded-box, 1rem);
+}
+
+.modal-bottom :where(.modal-box) {
+  width: 100%;
+  max-width: none;
+  --tw-translate-y: 2.5rem;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  border-top-left-radius: var(--rounded-box, 1rem);
+  border-top-right-radius: var(--rounded-box, 1rem);
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
 .invisible {
   visibility: hidden;
 }
 
 .collapse {
   visibility: collapse;
-}
-
-.fixed {
-  position: fixed;
 }
 
 .absolute {
@@ -2196,88 +2357,40 @@ details.collapse summary::-webkit-details-marker {
   right: 1.25rem;
 }
 
+.right-\[22em\] {
+  right: 22em;
+}
+
 .top-1\/2 {
   top: 50%;
-}
-
-.top-9 {
-  top: 2.25rem;
-}
-
-.left-0 {
-  left: 0px;
 }
 
 .top-14 {
   top: 3.5rem;
 }
 
-.right-0 {
-  right: 0px;
+.top-9 {
+  top: 2.25rem;
 }
 
-.right-40 {
-  right: 10rem;
+.right-2 {
+  right: 0.5rem;
 }
 
-.right-20 {
-  right: 5rem;
-}
-
-.right-32 {
-  right: 8rem;
-}
-
-.top-20 {
-  top: 5rem;
-}
-
-.right-6 {
-  right: 1.5rem;
-}
-
-.right-64 {
-  right: 16rem;
-}
-
-.-right-0 {
-  right: -0px;
-}
-
-.-right-1 {
-  right: -0.25rem;
-}
-
-.right-8 {
-  right: 2rem;
-}
-
-.right-96 {
-  right: 24rem;
-}
-
-.right-80 {
-  right: 20rem;
-}
-
-.right-\[80\] {
-  right: 80;
-}
-
-.right-\[22em\] {
-  right: 22em;
+.top-2 {
+  top: 0.5rem;
 }
 
 .z-20 {
   z-index: 20;
 }
 
-.z-\[1\] {
-  z-index: 1;
-}
-
 .z-30 {
   z-index: 30;
+}
+
+.z-\[1\] {
+  z-index: 1;
 }
 
 .order-1 {
@@ -2334,6 +2447,14 @@ details.collapse summary::-webkit-details-marker {
   margin-top: 1.5rem;
 }
 
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.ml-3 {
+  margin-left: 0.75rem;
+}
+
 .flex {
   display: flex;
 }
@@ -2344,6 +2465,10 @@ details.collapse summary::-webkit-details-marker {
 
 .hidden {
   display: none;
+}
+
+.h-0 {
+  height: 0px;
 }
 
 .h-1 {
@@ -2394,18 +2519,6 @@ details.collapse summary::-webkit-details-marker {
   height: 100%;
 }
 
-.h-0 {
-  height: 0px;
-}
-
-.h-8 {
-  height: 2rem;
-}
-
-.h-16 {
-  height: 4rem;
-}
-
 .max-h-36 {
   max-height: 9rem;
 }
@@ -2418,8 +2531,8 @@ details.collapse summary::-webkit-details-marker {
   min-height: 400px;
 }
 
-.w-14 {
-  width: 3.5rem;
+.w-0 {
+  width: 0px;
 }
 
 .w-32 {
@@ -2442,6 +2555,10 @@ details.collapse summary::-webkit-details-marker {
   width: 2rem;
 }
 
+.w-80 {
+  width: 20rem;
+}
+
 .w-\[90\%\] {
   width: 90%;
 }
@@ -2450,28 +2567,29 @@ details.collapse summary::-webkit-details-marker {
   width: 100%;
 }
 
-.w-0 {
-  width: 0px;
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
 }
 
-.w-4 {
-  width: 1rem;
+.w-\[5\] {
+  width: 5;
 }
 
-.w-40 {
-  width: 10rem;
+.w-\[50\%\] {
+  width: 50%;
 }
 
-.w-80 {
-  width: 20rem;
-}
-
-.w-60 {
-  width: 15rem;
+.w-\[45\%\] {
+  width: 45%;
 }
 
 .min-w-\[300px\] {
   min-width: 300px;
+}
+
+.max-w-14 {
+  max-width: 3.5rem;
 }
 
 .max-w-48 {
@@ -2502,16 +2620,28 @@ details.collapse summary::-webkit-details-marker {
   max-width: 20rem;
 }
 
-.max-w-8 {
-  max-width: 2rem;
+.max-w-md {
+  max-width: 28rem;
 }
 
-.max-w-16 {
-  max-width: 4rem;
+.max-w-sm {
+  max-width: 24rem;
 }
 
-.max-w-14 {
-  max-width: 3.5rem;
+.max-w-2 {
+  max-width: 0.5rem;
+}
+
+.max-w-1 {
+  max-width: 0.25rem;
+}
+
+.max-w-20 {
+  max-width: 5rem;
+}
+
+.max-w-40 {
+  max-width: 10rem;
 }
 
 .-translate-y-1\/2 {
@@ -2547,10 +2677,6 @@ details.collapse summary::-webkit-details-marker {
   align-items: center;
 }
 
-.justify-end {
-  justify-content: flex-end;
-}
-
 .justify-center {
   justify-content: center;
 }
@@ -2565,10 +2691,6 @@ details.collapse summary::-webkit-details-marker {
 
 .gap-10 {
   gap: 2.5rem;
-}
-
-.gap-2 {
-  gap: 0.5rem;
 }
 
 .gap-20 {
@@ -2611,10 +2733,6 @@ details.collapse summary::-webkit-details-marker {
 
 .overflow-x-auto {
   overflow-x: auto;
-}
-
-.overflow-y-hidden {
-  overflow-y: hidden;
 }
 
 .rounded-2xl {
@@ -2662,11 +2780,6 @@ details.collapse summary::-webkit-details-marker {
 .border-x-4 {
   border-left-width: 4px;
   border-right-width: 4px;
-}
-
-.border-y {
-  border-top-width: 1px;
-  border-bottom-width: 1px;
 }
 
 .border-b {
@@ -2796,6 +2909,10 @@ details.collapse summary::-webkit-details-marker {
      object-fit: cover;
 }
 
+.p-1 {
+  padding: 0.25rem;
+}
+
 .p-16 {
   padding: 4rem;
 }
@@ -2818,10 +2935,6 @@ details.collapse summary::-webkit-details-marker {
 
 .p-7 {
   padding: 1.75rem;
-}
-
-.p-1 {
-  padding: 0.25rem;
 }
 
 .px-14 {
@@ -2884,6 +2997,11 @@ details.collapse summary::-webkit-details-marker {
   padding-bottom: 0.75rem;
 }
 
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
 .py-7 {
   padding-top: 1.75rem;
   padding-bottom: 1.75rem;
@@ -2913,6 +3031,10 @@ details.collapse summary::-webkit-details-marker {
 
 .pl-6 {
   padding-left: 1.5rem;
+}
+
+.pr-2 {
+  padding-right: 0.5rem;
 }
 
 .pr-5 {
@@ -2959,8 +3081,12 @@ details.collapse summary::-webkit-details-marker {
   padding-top: 1.75rem;
 }
 
-.pr-2 {
-  padding-right: 0.5rem;
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 
 .text-center {
@@ -3080,6 +3206,25 @@ details.collapse summary::-webkit-details-marker {
 
 .duration-500 {
   transition-duration: 500ms;
+}
+
+@media (min-width: 640px) {
+  .sm\:modal-middle {
+    place-items: center;
+  }
+
+  .sm\:modal-middle :where(.modal-box) {
+    width: 91.666667%;
+    max-width: 32rem;
+    --tw-translate-y: 0px;
+    --tw-scale-x: .9;
+    --tw-scale-y: .9;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    border-top-left-radius: var(--rounded-box, 1rem);
+    border-top-right-radius: var(--rounded-box, 1rem);
+    border-bottom-right-radius: var(--rounded-box, 1rem);
+    border-bottom-left-radius: var(--rounded-box, 1rem);
+  }
 }
 
 .hover\:cursor-pointer:hover {

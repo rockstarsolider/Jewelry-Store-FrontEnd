@@ -31,5 +31,7 @@ search.addEventListener('input', () => {
 
 search.addEventListener('focusout', () => {
     const searchPro = document.getElementById('search-pro')
-    searchPro.classList.add('hidden')
+    setTimeout(function(){
+        searchPro.classList.add('hidden')
+    }, 100);
 })

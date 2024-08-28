@@ -76,10 +76,15 @@
         <div id='product-con' dir="rtl" class="grid grid-cols-2 xl:grid-cols-4 gap-8 w-full justify-items-center pt-4 ">
             
         </div>
-        <div dir="rtl" class="flex gap-2 justify-center items-center" >
-            <p>صفحه</p>
-            <input id="page-input" type="number" value="1" class="input input-bordered input-sm max-w-xs w-14" min="1"/>
-            <p>از <span id="page-count"></span> </p>
+        <div class="join">
+            <button class="join-item btn" id='prev-page'>«</button>
+            <button class="join-item btn" dir='rtl'>
+                صفحه 
+                <span id="page-input">1</span>
+                از 
+                <span id='page-count'>1</span>
+            </button>
+            <button class="join-item btn" id='next-page'>»</button>
         </div>
         <button id="page-btn" class="pt-1 text-lg btn bg-[#FFA280] text-white border-[#FFA280] hover:bg-[#FFA280]">صفحه بعد</button>
     </div>
@@ -153,7 +158,7 @@
         .then(data => {
             maxPage = Math.ceil(data[1]/2)
             pageCount.innerHTML = maxPage
-            pageInput.setAttribute('max',maxPage)
+            // pageInput.setAttribute('max',maxPage)
             const productCon = document.getElementById('product-con')
             productCon.innerHTML = ''
             data[0].forEach(item => {  
@@ -179,17 +184,21 @@
     getProducts()
     const pageInput = document.getElementById('page-input')
     const pageBtn = document.getElementById('page-btn')
+    const prevPage = document.getElementById('prev-page')
+    const nextPage = document.getElementById('next-page')
     const filterSub = document.getElementById('filter-sub')
     const pageCount = document.getElementById('page-count')
     filterSub.onclick = () => getProducts()
-    pageInput.onchange=()=>{
-        currentPage=pageInput.value
+    prevPage.addEventListener('click', () => {
+        if (currentPage == 1) { return }
+        currentPage -=1
+        pageInput.innerHTML = currentPage
         getProducts()
-    }
-    pageBtn.addEventListener('click',()=>{
-        if (currentPage+1 > maxPage){return}
-        currentPage+=1
-        pageInput.value = currentPage
+    })
+    nextPage.addEventListener('click', () => {
+        if (currentPage == maxPage) { return }
+        currentPage +=1
+        pageInput.innerHTML = currentPage
         getProducts()
     })
 
