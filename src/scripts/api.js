@@ -1,5 +1,5 @@
 export function apiUrl(){
-    return 'https://pandora-api.liara.run'
+    return 'https://pandoraa.liara.run'
 }
 
 const searchIcon = document.getElementById('search-icon')
